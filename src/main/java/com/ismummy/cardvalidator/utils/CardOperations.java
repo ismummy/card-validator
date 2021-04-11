@@ -5,9 +5,6 @@ import com.ismummy.cardvalidator.helpers.CardPayload;
 import com.ismummy.cardvalidator.helpers.CardVerificationResponse;
 import com.ismummy.cardvalidator.helpers.binlistApiResponse.BinListApiResponse;
 import com.ismummy.cardvalidator.models.Card;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpStatusCodeException;
 
 public class CardOperations {
     /**

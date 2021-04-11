@@ -1,11 +1,8 @@
 package com.ismummy.cardvalidator.helpers;
 
-import com.ismummy.cardvalidator.exception.GlobalExceptionHandler;
 import com.ismummy.cardvalidator.models.Card;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Data
 @NoArgsConstructor
