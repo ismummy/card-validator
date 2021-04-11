@@ -1,5 +1,7 @@
 package com.ismummy.cardvalidator.models;
 
+import com.ismummy.cardvalidator.utils.CardType;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -7,15 +9,29 @@ import java.util.Date;
 @Table
 public class Card {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String cardNumber;
 
-    @Column(name="createdAt", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "createdAt", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Date createdAt;
 
+    private String scheme;
+
+    @Enumerated(EnumType.STRING)
+    private CardType type;
+
+    private String bank;
+
     public Card() {
+    }
+
+    public Card(String cardNumber, String scheme, CardType type, String bank) {
+        this.cardNumber = cardNumber;
+        this.scheme = scheme;
+        this.type  = type;
+        this.bank = bank;
     }
 
     public Long getId() {
@@ -42,12 +58,28 @@ public class Card {
         this.createdAt = createdAt;
     }
 
-    @Override
-    public String toString() {
-        return "Card{" +
-                "id=" + id +
-                ", cardNumber='" + cardNumber + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
+
+    public void setScheme(String scheme) {
+        this.scheme = scheme;
+    }
+
+    public CardType getType() {
+        return type;
+    }
+
+    public void setType(CardType type) {
+        this.type = type;
+    }
+
+    public String getBank() {
+        return bank;
+    }
+
+    public void setBank(String bank) {
+        this.bank = bank;
+    }
+
+    public String getScheme() {
+        return scheme;
     }
 }
