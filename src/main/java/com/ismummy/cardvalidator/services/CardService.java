@@ -8,6 +8,7 @@ import com.ismummy.cardvalidator.helpers.binlistApiResponse.BinListApiResponse;
 import com.ismummy.cardvalidator.models.Card;
 import com.ismummy.cardvalidator.repositories.CardRepository;
 import com.ismummy.cardvalidator.helpers.CardVerificationResponse;
+import com.ismummy.cardvalidator.utils.CardOperations;
 import com.ismummy.cardvalidator.utils.CardType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -39,7 +40,7 @@ public class CardService {
 
 
     public CardVerificationResponse verifyCard(String cardNumber, HttpEntity<?> httpEntity) throws HttpStatusCodeException, InvalidInputException {
-        String validCardNumber = validateCard(cardNumber);
+        String validCardNumber = CardOperations.validateCard(cardNumber);
 
 
         BinListApiResponse binListApiResponse = null;
@@ -54,7 +55,7 @@ public class CardService {
         }
 
         Card card = saveValidCard(validCardNumber, binListApiResponse);
-        return prepareResponse(card);
+        return CardOperations.prepareResponse(card);
     }
 
 
@@ -88,62 +89,13 @@ public class CardService {
 
 
     /**
-     * This function validates the length of the card
-     *
-     * @param cardNumber:String
-     * @return the card number (truncated to 6 digits) if the input falls within the range of 6 to 19 characters
-     * @throws InvalidInputException if the input is invalid
-     */
-    private String validateCard(String cardNumber) throws InvalidInputException {
-
-        if (!cardNumber.matches("\\d{6,19}")) {
-            throw new InvalidInputException("Invalid Card Number Input");
-        }
-
-        if (cardNumber.length() > 6) {
-            return cardNumber.substring(0, 6);
-        }
-
-        return cardNumber;
-    }
-
-    /**
      * This function saves the valid card into the temp database
      *
      * @param cardNumber:String
      */
     private Card saveValidCard(String cardNumber, BinListApiResponse binListApiResponse) {
-        Card cardDetail = mapToCard(cardNumber, binListApiResponse);
+        Card cardDetail = CardOperations.mapToCard(cardNumber, binListApiResponse);
         return cardRepository.save(cardDetail);
-    }
-
-    /**
-     * This function maps the response from the BinList API to the structure of the database
-     *
-     * @param cardNumber:String
-     * @param binListApiResponse: an object instantiated with the BinListApiResponse class
-     * @return the new generated object
-     */
-    private Card mapToCard(String cardNumber, BinListApiResponse binListApiResponse) {
-
-        Card cardDetail = new Card();
-        cardDetail.setCardNumber(cardNumber);
-        cardDetail.setType(binListApiResponse.getType().equals("debit") ? CardType.DEBIT : CardType.CREDIT);
-        cardDetail.setBank(binListApiResponse.getBank() == null ? "" : binListApiResponse.getBank().getName());
-        cardDetail.setScheme(binListApiResponse.getScheme() == null ? "" : binListApiResponse.getScheme());
-
-        return cardDetail;
-    }
-
-
-    private CardVerificationResponse prepareResponse(Card card) {
-        CardVerificationResponse cardVerificationResponse = new CardVerificationResponse();
-        CardPayload payload = new CardPayload(card);
-
-        cardVerificationResponse.setPayload(payload);
-        cardVerificationResponse.setSuccess(true);
-
-        return cardVerificationResponse;
     }
 
 
