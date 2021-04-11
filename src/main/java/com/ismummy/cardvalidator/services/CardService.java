@@ -3,13 +3,11 @@ package com.ismummy.cardvalidator.services;
 import com.ismummy.cardvalidator.exception.InvalidInputException;
 import com.ismummy.cardvalidator.exception.InvalidPageException;
 import com.ismummy.cardvalidator.helpers.CardCountResponse;
-import com.ismummy.cardvalidator.helpers.CardPayload;
+import com.ismummy.cardvalidator.helpers.CardVerificationResponse;
 import com.ismummy.cardvalidator.helpers.binlistApiResponse.BinListApiResponse;
 import com.ismummy.cardvalidator.models.Card;
 import com.ismummy.cardvalidator.repositories.CardRepository;
-import com.ismummy.cardvalidator.helpers.CardVerificationResponse;
 import com.ismummy.cardvalidator.utils.CardOperations;
-import com.ismummy.cardvalidator.utils.CardType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -22,7 +20,6 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -86,7 +83,6 @@ public class CardService {
 
         return cardResponse;
     }
-
 
     /**
      * This function saves the valid card into the temp database

@@ -82,4 +82,16 @@ public class Card {
     public String getScheme() {
         return scheme;
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "id=" + id +
+                ", cardNumber='" + cardNumber + '\'' +
+                ", createdAt=" + createdAt +
+                ", scheme='" + scheme + '\'' +
+                ", type=" + type +
+                ", bank='" + bank + '\'' +
+                '}';
+    }
 }
