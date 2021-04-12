@@ -4,33 +4,21 @@ package com.ismummy.cardvalidator;
 import com.ismummy.cardvalidator.exception.InvalidInputException;
 import com.ismummy.cardvalidator.helpers.CardPayload;
 import com.ismummy.cardvalidator.helpers.CardVerificationResponse;
-import com.ismummy.cardvalidator.helpers.binlistApiResponse.BinListApiResponse;
-import com.ismummy.cardvalidator.repositories.CardRepository;
 import com.ismummy.cardvalidator.services.CardService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.*;
-import org.springframework.web.client.RestTemplate;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+import javax.annotation.Resource;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@SpringBootTest(classes = {CardValidatorApplication.class})
 public class CardValidatorTest {
-
-    @Mock
-    CardRepository cardRepository;
-
-    @Mock
-    RestTemplate restTemplate;
-
-
-    @InjectMocks
-    CardService cardService;
+    @Resource
+    private CardService cardService;
 
     @Test
     public void throws_error_on_wrong_input() {
@@ -55,23 +43,8 @@ public class CardValidatorTest {
         expectedResponse.setPayload(new CardPayload());
         expectedResponse.getPayload().setType("debit");
         expectedResponse.getPayload().setScheme("mastercard");
-        expectedResponse.getPayload().setBank("GTBANK");
+        expectedResponse.getPayload().setBank("ZENITH BANK");
 
-        BinListApiResponse response = new BinListApiResponse();
-        response.setBrand("MasterCard");
-        response.setScheme("MasterCard");
-        response.setType("debit");
-
-
-        ResponseEntity<BinListApiResponse> responseEntity = new ResponseEntity<>(response, HttpStatus.ACCEPTED);
-
-        when(restTemplate.exchange(
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.any(HttpMethod.class),
-                ArgumentMatchers.<HttpEntity<BinListApiResponse>>any(),
-                ArgumentMatchers.<Class<BinListApiResponse>>any(),
-                ArgumentMatchers.anyString()))
-                .thenReturn(responseEntity);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
